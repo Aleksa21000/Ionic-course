@@ -1,5 +1,8 @@
 {
+  "appId": "react.ionic.pronect",
   "name": "01_00 project",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react-vite"
 }
