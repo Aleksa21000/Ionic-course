@@ -10,15 +10,15 @@ const BmiControls: React.FC<BmiControlsProps> = (props) => {
   const { onCalculate, onReset } = props;
 
   return (
-    <IonRow>
-      <IonCol className="ion-text-left">
+    <IonRow className="ion-margin-top">
+      <IonCol size="12" sizeMd="6" className="ion-text-center">
         <IonButton onClick={onCalculate}>
           <IonIcon slot="start" icon={calculatorOutline} />
           Calculate
         </IonButton>
       </IonCol>
-      <IonCol className="ion-text-right">
-        <IonButton onClick={onReset}>
+      <IonCol size="12" sizeMd="6" className="ion-text-center">
+        <IonButton color="secondary" onClick={onReset}>
           <IonIcon slot="start" icon={refreshOutline} />
           Reset
         </IonButton>
