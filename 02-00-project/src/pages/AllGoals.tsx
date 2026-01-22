@@ -1,5 +1,4 @@
 import {
-  IonButton,
   IonContent,
   IonHeader,
   IonPage,
@@ -7,22 +6,19 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
-const Courses: React.FC = () => {
+const AllGoals: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Courses</IonTitle>
+          <IonTitle>All Goals</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <h2>This works, courses page!</h2>
-        <div>
-          <IonButton routerLink="/course-goals">To Course Goals</IonButton>
-        </div>
+        <h2>This works, All Goals page!</h2>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Courses;
+export default AllGoals;
