@@ -1,7 +1,33 @@
 :root {
-    --ion-toolbar-background: var(--ion-color-primary);
-    --ion-tab-bar-background: var(--ion-color-primary);
-    --ion-tab-bar-color-selected: var(--ion-color-secondary);
-    --ion-tab-bar-color: var(--ion-color-primary-contrast);
+    --app-bar-bg: var(--ion-color-primary);
+    --app-bar-fg: var(--ion-color-primary-contrast);
+    --tab-fg: rgba(0, 0, 0, 0.65);
+    --tab-fg-selected: #000;
     --ion-toolbar-color: var(--ion-color-primary-contrast);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-bar-bg: var(--ion-color-primary);
+    --app-bar-fg: var(--ion-color-primary-contrast);
+    --tab-fg: rgba(0, 0, 0, 0.65);
+    --tab-fg-selected: #000;
+  }
+}
+
+ion-toolbar {
+  --background: var(--app-bar-bg);
+  --color: var(--app-bar-fg);
+}
+
+ion-tab-bar {
+  --background: var(--app-bar-bg);
+  --color: var(--tab-fg);
+  --border: 0; /* remove md border line */
+  border-top: 0 !important;
+}
+
+ion-tab-button {
+  --color: var(--tab-fg);
+  --color-selected: var(--tab-fg-selected);
 }
