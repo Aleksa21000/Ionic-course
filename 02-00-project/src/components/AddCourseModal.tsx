@@ -1,3 +1,5 @@
+import "./addCourseModal.css";
+import { useMemo } from "react";
 import {
   IonButton,
   IonCol,
@@ -22,6 +24,7 @@ interface AddCourseModalProps {
 
 const AddCourseModal: React.FC<AddCourseModalProps> = (props) => {
   const { show, onCancel } = props;
+  const todayIso = useMemo(() => new Date().toISOString(), []);
 
   return (
     <IonModal isOpen={show}>
@@ -34,7 +37,7 @@ const AddCourseModal: React.FC<AddCourseModalProps> = (props) => {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonItem>
+              <IonItem lines="none">
                 <IonLabel position="stacked">Course Title</IonLabel>
                 <IonInput type="text" />
               </IonItem>
@@ -45,23 +48,29 @@ const AddCourseModal: React.FC<AddCourseModalProps> = (props) => {
               <IonItem lines="none">
                 <IonLabel position="stacked">Enrolment Date</IonLabel>
                 <IonDatetimeButton
+                  id="enrolment-date-btn"
                   datetime="date"
                   className="ion-margin-top ion-margin-end ion-margin-bottom"
                 />
-                <IonModal keepContentsMounted={true}>
-                  <IonDatetime
-                    id="date"
-                    presentation="date"
-                    formatOptions={{
-                      date: {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      },
-                    }}
-                  ></IonDatetime>
-                </IonModal>
               </IonItem>
+              <IonModal
+                trigger="enrolment-date-btn"
+                keepContentsMounted
+                className="datetime-modal"
+              >
+                <IonDatetime
+                  id="date"
+                  presentation="date"
+                  value={todayIso}
+                  formatOptions={{
+                    date: {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    },
+                  }}
+                ></IonDatetime>
+              </IonModal>
             </IonCol>
           </IonRow>
           <IonRow className="ion-text-center">

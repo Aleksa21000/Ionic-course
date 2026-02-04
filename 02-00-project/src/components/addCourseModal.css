@@ -1,0 +1,60 @@
+.ios .datetime-modal {
+  /* make sure it renders as a sheet-like modal */
+  --max-width: 560px;
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+
+  /* THIS is the key: use a surface color, not the page background */
+  --background: var(--ion-item-background, var(--ion-card-background, #1f1f1f));
+}
+
+/* ensure the modal content uses the modal background */
+.ios .datetime-modal::part(content) {
+  background: var(--background);
+  color: var(--ion-text-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+/* optional: stronger backdrop (android-like dim) */
+.ios .datetime-modal::part(backdrop) {
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 1;
+}
+
+/* datetime inside */
+.ios .datetime-modal ion-datetime {
+  --background: transparent; /* let modal provide the surface */
+  --color: var(--ion-text-color);
+
+  --dt-accent: var(--ion-color-secondary);
+  --dt-accent-rgb: var(--ion-color-secondary-rgb);
+
+  --title-color: var(--ion-text-color);
+  --button-color: var(--ion-text-color);
+}
+
+/* day numbers */
+.ios .datetime-modal ion-datetime::part(calendar-day) {
+  color: var(--ion-text-color);
+}
+
+/* selected day ring */
+.ios .datetime-modal ion-datetime::part(calendar-day-selected) {
+  background: rgba(var(--dt-accent-rgb), 0.22);
+  border: 2px solid rgba(var(--dt-accent-rgb), 1);
+  border-radius: 999px;
+  color: var(--ion-text-color);
+}
+
+.ios .datetime-modal ion-datetime::part(calendar-day-today) {
+  border: 2px solid rgba(var(--dt-accent-rgb), 0.9);
+  border-radius: 999px;
+}
+
+.ios .datetime-modal ion-datetime::part(calendar-day-active) {
+  background: rgba(var(--dt-accent-rgb), 0.18);
+  border-radius: 999px;
+}

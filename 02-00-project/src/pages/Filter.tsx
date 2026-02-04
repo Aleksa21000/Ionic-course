@@ -2,13 +2,22 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonItem,
+  IonLabel,
   IonMenuButton,
   IonPage,
   IonTitle,
+  IonToggle,
   IonToolbar,
 } from "@ionic/react";
 
+import { COURSE_DATA } from "../utils/courseData";
+
 const Filter: React.FC = () => {
+  const filterChangeHandler = (event: CustomEvent) => {
+    console.log(event);
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -20,7 +29,16 @@ const Filter: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <h2>Filter page</h2>
+        {COURSE_DATA.map((course) => (
+          <IonItem key={course.id} lines="full">
+            <IonLabel>{course.title}</IonLabel>
+            <IonToggle
+              slot="end"
+              value={course.id}
+              onIonChange={filterChangeHandler}
+            />
+          </IonItem>
+        ))}
       </IonContent>
     </IonPage>
   );
