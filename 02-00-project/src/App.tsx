@@ -2,6 +2,8 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { Redirect, Route } from "react-router";
 import { IonReactRouter } from "@ionic/react-router";
 
+import CoursesContextProvider from "./store/CoursesContextProvider";
+
 import SideDrawer from "./layout/SideDrawer";
 
 import Filter from "./pages/Filter";
@@ -44,15 +46,17 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <SideDrawer />
-      <IonRouterOutlet id="main">
-        <Route path="/filter" exact>
-          <Filter />
-        </Route>
-        <Route path="/courses">
-          <CourseTabs />
-        </Route>
-        <Redirect path="/" to="/courses/list" exact />
-      </IonRouterOutlet>
+      <CoursesContextProvider>
+        <IonRouterOutlet id="main">
+          <Route path="/filter" exact>
+            <Filter />
+          </Route>
+          <Route path="/courses">
+            <CourseTabs />
+          </Route>
+          <Redirect path="/" to="/courses/list" exact />
+        </IonRouterOutlet>
+      </CoursesContextProvider>
     </IonReactRouter>
   </IonApp>
 );
