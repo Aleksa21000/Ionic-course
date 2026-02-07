@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import coursesContext, { Course } from "./courses-context";
+import coursesContext, { Course, Goal } from "./courses-context";
 
 type Props = {
   children?: ReactNode;
@@ -23,16 +23,78 @@ const CoursesContextProvider = ({ children }: Props) => {
       goals: [],
     };
 
-    setCourses((prevState) => {
-      return prevState.concat(newCourse);
+    setCourses((courses) => {
+      return courses.concat(newCourse);
     });
   };
 
-  const addGoal = () => {};
+  const addGoal = (courseId: string, text: string) => {
+    const newGoal: Goal = {
+      id: Math.random().toString(),
+      text,
+    };
 
-  const deleteGoal = () => {};
+    setCourses((courses) => {
+      const updatedCourses = [...courses];
+      const updatedCourseIndex = updatedCourses.findIndex(
+        (course) => course.id === courseId,
+      );
 
-  const updateGoal = () => {};
+      const updatedCourseGoals =
+        updatedCourses[updatedCourseIndex].goals.concat(newGoal);
+      const updatedCourse = { ...updatedCourses[updatedCourseIndex] };
+      updatedCourse.goals = updatedCourseGoals;
+      updatedCourses[updatedCourseIndex] = updatedCourse;
+
+      return updatedCourses;
+    });
+  };
+
+  const deleteGoal = (courseId: string, goalId: string) => {
+    setCourses((courses) => {
+      const updatedCourses = [...courses];
+      const updatedCourseIndex = updatedCourses.findIndex(
+        (course) => course.id === courseId,
+      );
+
+      const updatedCourseGoals = updatedCourses[
+        updatedCourseIndex
+      ].goals.filter((goal) => goal.id !== goalId);
+
+      const updatedCourse = { ...updatedCourses[updatedCourseIndex] };
+      updatedCourse.goals = updatedCourseGoals;
+      updatedCourses[updatedCourseIndex] = updatedCourse;
+
+      return updatedCourses;
+    });
+  };
+
+  const updateGoal = (courseId: string, goalId: string, newText: string) => {
+    setCourses((courses) => {
+      const updatedCourses = [...courses];
+      const updatedCourseIndex = updatedCourses.findIndex(
+        (course) => course.id === courseId,
+      );
+
+      const updatedCourseGoals =
+        updatedCourses[updatedCourseIndex].goals.slice();
+      const updatedCourseGoalIndex = updatedCourseGoals.findIndex(
+        (goal) => goal.id === goalId,
+      );
+
+      const updatedGoal = {
+        ...updatedCourseGoals[updatedCourseGoalIndex],
+        text: newText,
+      };
+      updatedCourseGoals[updatedCourseGoalIndex] = updatedGoal;
+
+      const updatedCourse = { ...updatedCourses[updatedCourseIndex] };
+      updatedCourse.goals = updatedCourseGoals;
+      updatedCourses[updatedCourseIndex] = updatedCourse;
+
+      return updatedCourses;
+    });
+  };
 
   return (
     <coursesContext.Provider

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import {
   IonAlert,
   IonBackButton,
@@ -14,7 +14,7 @@ import {
 } from "@ionic/react";
 import { useParams } from "react-router";
 
-import { COURSE_DATA } from "../utils/courseData";
+import coursesContext from "../store/courses-context";
 import FabComponent from "../layout/FabComponent";
 import IosAddButton from "../layout/IosAddButton";
 import EditModal from "../components/EditModal";
@@ -28,18 +28,25 @@ const CourseGoals: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
 
+  const coursesCtx = useContext(coursesContext);
+
   const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null);
+  const selectedGoalIdRef = useRef<string | null>(null);
 
   const selectedCourseId = useParams<{ courseId: string }>().courseId;
-  const selectedCourse = COURSE_DATA.find((c) => c.id === selectedCourseId);
+  const selectedCourse = coursesCtx.courses.find(
+    (c) => c.id === selectedCourseId,
+  );
 
-  const startDeleteGoalHandler = () => {
+  const startDeleteGoalHandler = (goalId: string) => {
     slidingOptionsRef.current?.closeOpened();
     setStartedDeleting(true);
+    selectedGoalIdRef.current = goalId;
   };
 
   const deleteGoalHandler = () => {
     setStartedDeleting(false);
+    coursesCtx.deleteGoal(selectedCourseId, selectedGoalIdRef.current!);
     setToastMessage("Deleted goal!");
   };
 
@@ -62,11 +69,21 @@ const CourseGoals: React.FC = () => {
     setSelectedGoal(null);
   };
 
+  const saveGoalHandler = (text: string) => {
+    if (selectedGoal) {
+      coursesCtx.updateGoal(selectedCourseId, selectedGoal?.id, text);
+    } else {
+      coursesCtx.addGoal(selectedCourseId, text);
+    }
+    setIsEditing(false);
+  };
+
   return (
     <>
       <EditModal
         show={isEditing}
         onCancel={cancelEditGoalHandler}
+        onSave={saveGoalHandler}
         editedGoal={selectedGoal}
       />
       <IonToast
@@ -115,7 +132,7 @@ const CourseGoals: React.FC = () => {
                   key={goal.id}
                   text={goal.text}
                   slidingRef={slidingOptionsRef}
-                  onStartDelete={startDeleteGoalHandler}
+                  onStartDelete={startDeleteGoalHandler.bind(null, goal.id)}
                   onStartEdit={startEditGoalHandler.bind(null, goal.id)}
                 />
               ))}
