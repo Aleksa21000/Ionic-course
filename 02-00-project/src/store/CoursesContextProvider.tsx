@@ -12,6 +12,7 @@ const CoursesContextProvider = ({ children }: Props) => {
       title: "Ionic + React - practical guide",
       enrolled: new Date(),
       goals: [{ id: "c1g1", text: "Finish the course! - Ionic + React" }],
+      included: true,
     },
   ]);
 
@@ -21,6 +22,7 @@ const CoursesContextProvider = ({ children }: Props) => {
       title,
       enrolled: date,
       goals: [],
+      included: true,
     };
 
     setCourses((courses) => {
@@ -96,6 +98,23 @@ const CoursesContextProvider = ({ children }: Props) => {
     });
   };
 
+  const changeCourseFilter = (courseId: string, isIncluded: boolean) => {
+    setCourses((courses) => {
+      const updatedCourses = [...courses];
+      const updatedCourseIndex = updatedCourses.findIndex(
+        (course) => course.id === courseId,
+      );
+
+      const updatedCourse = {
+        ...updatedCourses[updatedCourseIndex],
+        included: isIncluded,
+      };
+      updatedCourses[updatedCourseIndex] = updatedCourse;
+
+      return updatedCourses;
+    });
+  };
+
   return (
     <coursesContext.Provider
       value={{
@@ -104,6 +123,7 @@ const CoursesContextProvider = ({ children }: Props) => {
         addCourse,
         deleteGoal,
         updateGoal,
+        changeCourseFilter,
       }}
     >
       {children}

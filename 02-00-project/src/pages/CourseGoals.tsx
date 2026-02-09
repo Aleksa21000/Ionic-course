@@ -39,6 +39,7 @@ const CourseGoals: React.FC = () => {
   );
 
   const startDeleteGoalHandler = (goalId: string) => {
+    setToastMessage("");
     slidingOptionsRef.current?.closeOpened();
     setStartedDeleting(true);
     selectedGoalIdRef.current = goalId;
@@ -78,6 +79,27 @@ const CourseGoals: React.FC = () => {
     setIsEditing(false);
   };
 
+  let content = <h2 className="ion-text-center">No Goals found.</h2>;
+
+  if (!selectedCourse)
+    content = <h2 className="ion-text-center">No Course found.</h2>;
+
+  if (selectedCourse && selectedCourse.goals.length > 0) {
+    content = (
+      <IonList className="ion-no-padding">
+        {selectedCourse.goals.map((goal) => (
+          <EditableGoalItem
+            key={goal.id}
+            text={goal.text}
+            slidingRef={slidingOptionsRef}
+            onStartDelete={startDeleteGoalHandler.bind(null, goal.id)}
+            onStartEdit={startEditGoalHandler.bind(null, goal.id)}
+          />
+        ))}
+      </IonList>
+    );
+  }
+
   return (
     <>
       <EditModal
@@ -89,9 +111,6 @@ const CourseGoals: React.FC = () => {
       <IonToast
         isOpen={!!toastMessage}
         duration={2000}
-        onDidDismiss={() => {
-          setToastMessage("");
-        }}
         message={toastMessage}
       />
       <IonAlert
@@ -125,19 +144,7 @@ const CourseGoals: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          {selectedCourse && (
-            <IonList className="ion-no-padding">
-              {selectedCourse.goals.map((goal) => (
-                <EditableGoalItem
-                  key={goal.id}
-                  text={goal.text}
-                  slidingRef={slidingOptionsRef}
-                  onStartDelete={startDeleteGoalHandler.bind(null, goal.id)}
-                  onStartEdit={startEditGoalHandler.bind(null, goal.id)}
-                />
-              ))}
-            </IonList>
-          )}
+          {content}
           {isPlatform("android") && (
             <FabComponent startHandler={startAddGoalHandler} />
           )}
